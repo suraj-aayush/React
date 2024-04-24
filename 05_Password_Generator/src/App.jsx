@@ -34,6 +34,8 @@ function App() {
   <div className='flex item-center gap-x-1'>
     <input type="range" min={8} max={20} value={length} className='cursor-pointer'/>
     <label> LENGTH: {length} </label>
+    
+    <input type="text" />
   </div>
 </div>
 
