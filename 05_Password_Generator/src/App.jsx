@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -6,13 +6,27 @@ import { useState } from 'react'
 function App() {
   const [length, setLength] = useState(8)
   const [numAllow, setNumAllow] = useState(false);
-  const [char, setChar] = useState(false);
+  const [charAllow, setChar] = useState(false);
   const [password, setPassword] = useState("");
 
-  const passwordGenerator = ()=>
-  {
+  const passwordGenerator = useCallback( function() {
+      let pass = ""
+      let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-  }
+      if(numAllow) str+="0123456789"
+      if(charAllow) str+="!@#$%^&*(){}"
+
+      for(let i=1; i<=length; i++)
+      {
+        let char = Math.floor(Math.random() * str.length + 1);
+        pass = str.charAt(char);
+      }
+      setPassword(pass)
+
+  }, 
+  [length, numAllow, charAllow, setPassword] )
+
+  
 
   return (
     <>
@@ -35,7 +49,7 @@ function App() {
     <input type="range" min={8} max={20} value={length} className='cursor-pointer'/>
     <label> LENGTH: {length} </label>
     
-    <input type="text" />
+
   </div>
 </div>
 
