@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 // import './App.css'
@@ -8,6 +8,8 @@ function App() {
   const [numAllow, setNumAllow] = useState(false);
   const [charAllow, setChar] = useState(false);
   const [password, setPassword] = useState("");
+
+  const passRef = useRef(null)
 
   const passwordGenerator = useCallback( function() {
       let pass = ""
@@ -19,7 +21,7 @@ function App() {
       for(let i=1; i<=length; i++)
       {
         let char = Math.floor(Math.random() * str.length + 1);
-        pass = str.charAt(char);
+        pass += str.charAt(char);
       }
       setPassword(pass)
 
@@ -27,6 +29,15 @@ function App() {
   [length, numAllow, charAllow, setPassword] )
 
   
+  const copyPassword = useCallback( ()=>{
+    window.navigator.clipboard.writeText(pass);
+    window.alert("Password Copied")
+  }, [password] )
+
+
+  useEffect( ()=>{
+      passwordGenerator();
+  }, [length, numAllow, charAllow, passwordGenerator] )
 
   return (
     <>
@@ -36,21 +47,47 @@ function App() {
 
       <div className="flex shadow-lg rounded-lg overflow-hidden mb-4">
 
-      <input type="text" value={password} className="outlie-none w-full py-1 px-2" placeholder='password' readOnly/>
+      < input type="text" value={password} className="outlie-none w-full py-1 px-2" placeholder='password' readOnly
+      ref={passRef}
+      />
 
 
-<button className='outline-none bg-cyan-600 rounded-xl text-white px-2 py-2 shrink-0' > COPY
+<button onClick={copyPassword} className='outline-none bg-cyan-600 rounded-xl text-white px-2 py-2 shrink-0' > COPY
  </button>
 
       </div>
 
 <div className='flex text-sm gap-x-2'>
   <div className='flex item-center gap-x-1'>
-    <input type="range" min={8} max={20} value={length} className='cursor-pointer'/>
+    <input type="range" min={8} max={20} value={length} className='cursor-pointer'
+    onChange={ (e)=>{ setLength(e.target.value) } }
+    />
     <label> LENGTH: {length} </label>
-    
-
   </div>
+
+<div className='flex items-center gap-x-1'>
+  < input type="checkbox"
+    defaultChecked={numAllow}
+    id="numberInput"
+    onChange={ ()=>{
+      setNumAllow( (prev)=>!prev ); // reversing the previous value
+    }}
+  />
+  <label htmlFor="numberInput"> Numbers </label>
+</div>
+
+<div className='flex items-center gap-x-1'>
+  < input type="checkbox"
+    defaultChecked={charAllow}
+    id="characterInput"
+    onChange={ ()=>{
+      setChar( (prev)=>!prev ); // reversing the previous value
+    }}
+  />
+  <label htmlFor="characterInput"> Character </label>
+</div>
+
+
 </div>
 
       </div>
