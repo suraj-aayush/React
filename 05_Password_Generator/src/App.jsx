@@ -30,9 +30,10 @@ function App() {
 
   
   const copyPassword = useCallback( ()=>{
-    window.navigator.clipboard.writeText(pass);
+    window.navigator.clipboard.writeText(password);
     window.alert("Password Copied")
   }, [password] )
+
 
 
   useEffect( ()=>{
@@ -52,7 +53,9 @@ function App() {
       />
 
 
-<button onClick={copyPassword} className='outline-none bg-cyan-600 rounded-xl text-white px-2 py-2 shrink-0' > COPY
+<button onClick={copyPassword} 
+
+className='outline-none bg-cyan-600 rounded-xl transition-colors duration-200 hover:bg-red-700 text-white px-2 py-2 shrink-0' > COPY
  </button>
 
       </div>
