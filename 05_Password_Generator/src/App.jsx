@@ -30,8 +30,9 @@ function App() {
 
   
   const copyPassword = useCallback( ()=>{
+    passRef.current?.select();
     window.navigator.clipboard.writeText(password);
-    window.alert("Password Copied")
+    // window.alert("Password Copied")
   }, [password] )
 
 
